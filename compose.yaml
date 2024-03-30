@@ -1,0 +1,33 @@
+version: '3.7'
+
+services:
+  ipc_database:
+    image: postgres:14.5-alpine
+    container_name: ipc_database
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: ${DATABASE_USER}
+      POSTGRES_PASSWORD: ${DATABASE_PASS}
+      POSTGRES_DB: ${DATABASE_SCHEMA}
+
+  
+
+  ipc_app: &app
+    image: aex-server
+    build: .
+    container_name: ipc_app
+    volumes:
+      - ./:/app
+    ports:
+      - "8000:80"
+    depends_on:
+      - ipc_database
+    env_file: docker-compose.env
+    command:
+      - sh
+      - -c
+      - |
+        python manage.py migrate
+        gunicorn --config /app/src/gunicorn_conf.py src.config.wsgi:application
+
