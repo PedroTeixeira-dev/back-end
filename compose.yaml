@@ -7,14 +7,12 @@ services:
     ports:
       - "5432:5432"
     environment:
-      POSTGRES_USER: ${DATABASE_USER}
-      POSTGRES_PASSWORD: ${DATABASE_PASS}
-      POSTGRES_DB: ${DATABASE_SCHEMA}
+      POSTGRES_PASSWORD: 123
 
   
 
   ipc_app: &app
-    image: aex-server
+    image: ipc-server
     build: .
     container_name: ipc_app
     volumes:
@@ -23,11 +21,10 @@ services:
       - "8000:80"
     depends_on:
       - ipc_database
-    env_file: docker-compose.env
     command:
-      - sh
+      - bash
       - -c
       - |
-        python manage.py migrate
-        gunicorn --config /app/src/gunicorn_conf.py src.config.wsgi:application
+        flask db upgrade -d ais_server/migrations
+        gunicorn src.config.wsgi:application
 

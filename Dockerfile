@@ -1,4 +1,4 @@
-FROM 3.12.2-alpine3.18 AS base
+FROM python:3.11.0-slim AS base
 
 ARG APP_USER=ipc
 
