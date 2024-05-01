@@ -30,4 +30,4 @@ EXPOSE 80
 RUN chmod ugo+rwx -R /app
 
 CMD /bin/sh -c "flask db upgrade -d back-end/migrations; \
-  gunicorn --config gunicorn_config.py wsgi:application"
+  gunicorn --config wsgi:application"

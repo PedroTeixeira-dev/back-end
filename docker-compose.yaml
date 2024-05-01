@@ -26,5 +26,5 @@ services:
       - -c
       - |
         flask db upgrade -d ais_server/migrations
-        gunicorn src.config.wsgi:application
+        gunicorn wsgi:application
 
