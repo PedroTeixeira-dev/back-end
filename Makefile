@@ -1,16 +1,16 @@
-PROJECT_NAME := ipc-server
+PROJECT_NAME := ipc_app
 PYTHON_VERSION := 3.11.0
 VENV_NAME := $(PROJECT_NAME)-$(PYTHON_VERSION)
 
 up: ## up the environment in the docker-compose
-	docker-compose -f docker-compose.yaml up -d
+	docker-compose up -d
 
 build: ## up the environment in the docker-compose building the image
-	docker-compose -f docker-compose.yaml up -d --build
+	docker-compose up -d --build
 
 down: ## down the environment in the docker-compose
-	docker-compose -f docker-compose.yaml down
-	docker-compose -f docker-compose.yaml rm
+	docker-compose down
+	docker-compose rm
 
 db-upgrade:
 	flask db upgrade -d ais_server/migrations
@@ -23,7 +23,7 @@ create-venv: ## install python, create virtualenv and set virtualenv to current
 	pyenv uninstall -f $(VENV_NAME)
 	pyenv virtualenv $(PYTHON_VERSION) $(VENV_NAME)
 	pyenv local $(VENV_NAME)
-	pip install pip -U
+	pip install -U pip pipenv
 
 
 setup-dev: ## install dev requirements
@@ -31,3 +31,9 @@ setup-dev: ## install dev requirements
 
 setup: ## install requirements
 	pipenv install --deploy	
+
+logs: ## project logs on container
+	docker logs $(PROJECT_NAME) --follow
+
+sh: ## run sh inside container
+	docker exec -it $(PROJECT_NAME) sh

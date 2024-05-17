@@ -7,24 +7,18 @@ services:
     ports:
       - "5432:5432"
     environment:
+      POSTGRES_USER: 'postgres'
       POSTGRES_PASSWORD: 123
+      POSTGRES_DB: 'ipc'
 
-  
-
-  ipc_app: &app
+  ipc_app:
     image: ipc-server
     build: .
     container_name: ipc_app
     volumes:
       - ./:/app
     ports:
-      - "8000:80"
+      - 5000:5000
     depends_on:
       - ipc_database
-    command:
-      - bash
-      - -c
-      - |
-        flask db upgrade -d ais_server/migrations
-        gunicorn wsgi:application
-
+    command: gunicorn --conf src/gunicorn_conf.py src.wsgi:application --reload
