@@ -22,3 +22,4 @@ services:
     depends_on:
       - ipc_database
     command: gunicorn --conf src/gunicorn_conf.py src.wsgi:application --reload
+      #- flask db upgrade -d ipc_app/migrations
