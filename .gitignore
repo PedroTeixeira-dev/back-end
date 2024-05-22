@@ -344,6 +344,7 @@ cython_debug/
 
 # CMake
 cmake-build-*/
+Makefile
 
 # Mongo Explorer plugin
 .idea/**/mongoSettings.xml
