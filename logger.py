@@ -1,7 +1,7 @@
 from logging.config import dictConfig
 import logging
 import os
-from config import Config
+from config.default import Config
 
 
 log_path = "log/"
