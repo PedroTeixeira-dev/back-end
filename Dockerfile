@@ -25,9 +25,9 @@ RUN pipenv install --system --deploy
 
 COPY . ${APP_HOME}
 
-EXPOSE 80
+EXPOSE 5000
 
 RUN chmod ugo+rwx -R /app
 
 CMD /bin/sh -c "flask db upgrade -d back-end/migrations; \
-  gunicorn --config gunicorn_config.py wsgi:application"
+  gunicorn --config wsgi:application"

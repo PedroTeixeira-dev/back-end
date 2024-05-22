@@ -1,0 +1,24 @@
+version: '3.7'
+
+services:
+  ipc_database:
+    image: postgres:14.5-alpine
+    container_name: ipc_database
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: 'postgres'
+      POSTGRES_PASSWORD: 123
+      POSTGRES_DB: 'ipc'
+
+  ipc_app:
+    image: ipc-server
+    build: .
+    container_name: ipc_app
+    volumes:
+      - ./:/app
+    ports:
+      - 5000:5000
+    depends_on:
+      - ipc_database
+    command: gunicorn --conf src/gunicorn_conf.py src.wsgi:application --reload
